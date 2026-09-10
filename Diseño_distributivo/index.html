@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Acordeón</title>
+
+  <!-- Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    /* =========================================
+       GENERAL
+    ========================================== */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #ffffff;
+      font-family: "Poppins", sans-serif;
+      color: #181818;
+      padding: 30px;
+    }
+
+    .acordeon {
+      width: 100%;
+      max-width: 1700px;
+      margin: 0 auto;
+
+      position: relative;
+
+      padding-left: 45px;
+    }
+
+
+    /* =========================================
+       LÍNEA VERTICAL
+    ========================================== */
+
+    .acordeon::before {
+      content: "";
+
+      position: absolute;
+
+      left: 13px;
+      top: 12px;
+      bottom: 12px;
+
+      width: 4px;
+
+      background: #eeeeee;
+
+      border-radius: 10px;
+    }
+
+
+    /* =========================================
+       ITEM
+    ========================================== */
+
+    .item {
+      position: relative;
+
+      margin-bottom: 24px;
+    }
+
+    .item:last-child {
+      margin-bottom: 0;
+    }
+
+
+    /* =========================================
+       PUNTO
+    ========================================== */
+
+    .item::before {
+      content: "";
+
+      position: absolute;
+
+      left: -43px;
+      top: 20px;
+
+      width: 23px;
+      height: 23px;
+
+      border-radius: 50%;
+
+      background: var(--color);
+
+      z-index: 3;
+
+      transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+    }
+
+
+    /* =========================================
+       LÍNEA HORIZONTAL
+    ========================================== */
+
+    .item::after {
+      content: "";
+
+      position: absolute;
+
+      left: -22px;
+      top: 30px;
+
+      width: 52px;
+      height: 4px;
+
+      border-radius: 5px;
+
+      background: var(--color);
+
+      z-index: 2;
+
+      transition: width 0.35s ease;
+    }
+
+
+    /* =========================================
+       BOTÓN
+    ========================================== */
+
+    .acordeon-btn {
+      width: 100%;
+
+      border: none;
+      background: transparent;
+
+      font-family: "Poppins", sans-serif;
+
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+
+      gap: 15px;
+
+      padding: 10px 20px 10px 45px;
+
+      min-height: 62px;
+
+      text-align: left;
+
+      color: #181818;
+
+      transition: color 0.3s ease;
+    }
+
+
+    /* LETRA */
+
+    .letra {
+      font-size: clamp(1.25rem, 1.7vw, 1.75rem);
+      font-weight: 500;
+
+      min-width: 35px;
+
+      color: #181818;
+    }
+
+
+    /* ICONO + */
+
+    .icono {
+      margin-left: auto;
+
+      width: 34px;
+      height: 34px;
+
+      border: 2px solid var(--color);
+      border-radius: 50%;
+
+      position: relative;
+
+      flex-shrink: 0;
+
+      transition:
+        transform 0.4s ease,
+        background 0.3s ease;
+    }
+
+    .icono::before,
+    .icono::after {
+      content: "";
+
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      background: var(--color);
+
+      border-radius: 5px;
+
+      transform: translate(-50%, -50%);
+
+      transition: all 0.35s ease;
+    }
+
+    .icono::before {
+      width: 15px;
+      height: 2px;
+    }
+
+    .icono::after {
+      width: 2px;
+      height: 15px;
+    }
+
+
+    /* =========================================
+       CONTENIDO
+    ========================================== */
+
+    .contenido {
+      display: grid;
+
+      grid-template-rows: 0fr;
+
+      opacity: 0;
+
+      transition:
+        grid-template-rows 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.45s ease;
+    }
+
+    .contenido-inner {
+      overflow: hidden;
+    }
+
+    .contenido p {
+      padding:
+        5px
+        70px
+        25px
+        45px;
+
+      font-family: "Poppins", sans-serif;
+
+      font-size: clamp(1.05rem, 1.55vw, 1.55rem);
+
+      font-weight: 400;
+
+      line-height: 1.55;
+
+      color: #181818;
+    }
+
+
+    /* =========================================
+       ITEM ABIERTO
+    ========================================== */
+
+    .item.activo .contenido {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .item.activo::before {
+      transform: scale(1.15);
+
+      box-shadow:
+        0 0 0 7px
+        color-mix(in srgb, var(--color) 15%, transparent);
+    }
+
+    .item.activo::after {
+      width: 65px;
+    }
+
+    .item.activo .icono {
+      transform: rotate(180deg);
+
+      background: var(--color);
+    }
+
+    .item.activo .icono::before,
+    .item.activo .icono::after {
+      background: #ffffff;
+    }
+
+    .item.activo .icono::after {
+      transform:
+        translate(-50%, -50%)
+        rotate(90deg);
+    }
+
+
+    /* =========================================
+       COLORES
+    ========================================== */
+
+    .item:nth-child(1) {
+      --color: #4059b7;
+    }
+
+    .item:nth-child(2) {
+      --color: #06195c;
+    }
+
+    .item:nth-child(3) {
+      --color: #367caf;
+    }
+
+    .item:nth-child(4) {
+      --color: #44558c;
+    }
+
+    .item:nth-child(5) {
+      --color: #3694ad;
+    }
+
+
+    /* =========================================
+       HOVER
+    ========================================== */
+
+    @media (hover: hover) {
+
+      .acordeon-btn:hover .icono {
+        transform: scale(1.08);
+      }
+
+      .item.activo .acordeon-btn:hover .icono {
+        transform:
+          rotate(180deg)
+          scale(1.08);
+      }
+
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 768px) {
+
+      body {
+        padding: 20px 15px;
+      }
+
+      .acordeon {
+        padding-left: 35px;
+      }
+
+      .acordeon::before {
+        left: 9px;
+        width: 3px;
+      }
+
+      .item::before {
+        left: -34px;
+
+        width: 18px;
+        height: 18px;
+
+        top: 20px;
+      }
+
+      .item::after {
+        left: -18px;
+        top: 27px;
+
+        width: 38px;
+        height: 3px;
+      }
+
+      .acordeon-btn {
+        padding:
+          8px
+          5px
+          8px
+          28px;
+
+        gap: 8px;
+      }
+
+      .letra {
+        font-size: 1.1rem;
+        min-width: 27px;
+      }
+
+      .icono {
+        width: 30px;
+        height: 30px;
+      }
+
+      .contenido p {
+        padding:
+          5px
+          15px
+          20px
+          28px;
+
+        font-size: 1rem;
+      }
+
+    }
+
+
+    /* =========================================
+       ACCESIBILIDAD
+    ========================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+
+  <div class="acordeon">
+
+
+    <!-- =====================================
+         A
+    ====================================== -->
+
+    <div class="item">
+
+      <button
+        class="acordeon-btn"
+        aria-expanded="false"
+      >
+
+        <span class="letra">
+          a.
+        </span>
+
+        <span class="icono"></span>
+
+      </button>
+
+
+      <div class="contenido">
+
+        <div class="contenido-inner">
+
+          <p>
+            Desglosar la base de referencia y los objetivos por sexo, edad, etnia, discapacidad, zona rural y ubicación, cuando así lo permitan las estadísticas.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         B
+    ====================================== -->
+
+    <div class="item">
+
+      <button
+        class="acordeon-btn"
+        aria-expanded="false"
+      >
+
+        <span class="letra">
+          b.
+        </span>
+
+        <span class="icono"></span>
+
+      </button>
+
+
+      <div class="contenido">
+
+        <div class="contenido-inner">
+
+          <p>
+            No medir solo la infraestructura instalada, sino el acceso efectivo: tiempo, costo, calidad, continuidad y pertinencia.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         C
+    ====================================== -->
+
+    <div class="item">
+
+      <button
+        class="acordeon-btn"
+        aria-expanded="false"
+      >
+
+        <span class="letra">
+          c.
+        </span>
+
+        <span class="icono"></span>
+
+      </button>
+
+
+      <div class="contenido">
+
+        <div class="contenido-inner">
+
+          <p>
+            Analizar el impacto del gasto, quién se favorece, quién aporta los fondos y quién sufre las consecuencias medioambientales o el desplazamiento.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         D
+    ====================================== -->
+
+    <div class="item">
+
+      <button
+        class="acordeon-btn"
+        aria-expanded="false"
+      >
+
+        <span class="letra">
+          d.
+        </span>
+
+        <span class="icono"></span>
+
+      </button>
+
+
+      <div class="contenido">
+
+        <div class="contenido-inner">
+
+          <p>
+            Hacer coincidir el universalismo de los derechos con una intensidad territorial que se corresponda con las privaciones y los costos.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         E
+    ====================================== -->
+
+    <div class="item">
+
+      <button
+        class="acordeon-btn"
+        aria-expanded="false"
+      >
+
+        <span class="letra">
+          e.
+        </span>
+
+        <span class="icono"></span>
+
+      </button>
+
+
+      <div class="contenido">
+
+        <div class="contenido-inner">
+
+          <p>
+            Incluir medios de reclamo, de reparación y de ajuste en el transcurso de la implementación.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+  <script>
+
+    const items = document.querySelectorAll(".item");
+
+
+    items.forEach((item) => {
+
+      const boton = item.querySelector(".acordeon-btn");
+
+
+      boton.addEventListener("click", () => {
+
+        const estabaActivo =
+          item.classList.contains("activo");
+
+
+        /* Cierra todos */
+
+        items.forEach((otroItem) => {
+
+          otroItem.classList.remove("activo");
+
+          otroItem
+            .querySelector(".acordeon-btn")
+            .setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+        });
+
+
+        /* Abre el seleccionado */
+
+        if (!estabaActivo) {
+
+          item.classList.add("activo");
+
+          boton.setAttribute(
+            "aria-expanded",
+            "true"
+          );
+
+        }
+
+      });
+
+    });
+
+  </script>
+
+
+</body>
+</html>

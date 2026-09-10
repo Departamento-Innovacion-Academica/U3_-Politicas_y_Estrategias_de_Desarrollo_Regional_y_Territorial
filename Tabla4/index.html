@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Capacidades</title>
+
+  <!-- Fuente Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    /* =========================================
+       CONFIGURACIÓN GENERAL
+    ========================================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #ffffff;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+
+    /* =========================================
+       CONTENEDOR
+    ========================================== */
+
+    .tabla-contenedor {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+
+      border: 1px solid #e5e5e5;
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      background: #ffffff;
+    }
+
+
+    /* =========================================
+       TABLA
+    ========================================== */
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+
+    /* =========================================
+       ANCHOS DE COLUMNAS
+    ========================================== */
+
+    col:nth-child(1) {
+      width: 20%;
+    }
+
+    col:nth-child(2) {
+      width: 35%;
+    }
+
+    col:nth-child(3) {
+      width: 45%;
+    }
+
+
+    /* =========================================
+       ENCABEZADO
+    ========================================== */
+
+    thead {
+      background: #3d55ad;
+    }
+
+    thead th {
+      color: #ffffff;
+
+      text-align: left;
+
+      font-size: clamp(1rem, 1.5vw, 1.55rem);
+
+      font-weight: 700;
+
+      padding: 20px 25px;
+
+      line-height: 1.3;
+    }
+
+
+    /* =========================================
+       FILAS
+    ========================================== */
+
+    tbody tr {
+      border-bottom: 1px solid #ececec;
+
+      opacity: 0;
+
+      transition:
+        transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 1.1s ease;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+
+    /* =========================================
+       FILAS IMPARES:
+       ENTRAN DESDE LA IZQUIERDA
+    ========================================== */
+
+    tbody tr:nth-child(odd) {
+      transform: translateX(-140px);
+    }
+
+
+    /* =========================================
+       FILAS PARES:
+       ENTRAN DESDE LA DERECHA
+    ========================================== */
+
+    tbody tr:nth-child(even) {
+      transform: translateX(140px);
+    }
+
+
+    /* =========================================
+       POSICIÓN FINAL
+    ========================================== */
+
+    tbody tr.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+
+    /* =========================================
+       CELDAS
+    ========================================== */
+
+    tbody td {
+      padding: 20px 25px;
+
+      vertical-align: top;
+
+      color: #242424;
+
+      font-family: "Poppins", sans-serif;
+
+      font-size: clamp(0.95rem, 1.35vw, 1.35rem);
+
+      font-weight: 400;
+
+      line-height: 1.55;
+
+      background: #ffffff;
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 900px) {
+
+      body {
+        padding: 12px;
+      }
+
+      .tabla-contenedor {
+        border-radius: 16px;
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 900px;
+      }
+
+      thead th {
+        padding: 18px 20px;
+        font-size: 1rem;
+      }
+
+      tbody td {
+        padding: 18px 20px;
+        font-size: 0.95rem;
+      }
+
+    }
+
+
+    /* =========================================
+       ACCESIBILIDAD:
+       REDUCIR ANIMACIONES
+    ========================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      tbody tr {
+        opacity: 1;
+        transform: none !important;
+        transition: none;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+
+  <div class="tabla-contenedor">
+
+    <table>
+
+      <colgroup>
+        <col>
+        <col>
+        <col>
+      </colgroup>
+
+
+      <!-- =====================================
+           ENCABEZADO
+      ====================================== -->
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Capacidad
+          </th>
+
+          <th>
+            Manifestación
+          </th>
+
+          <th>
+            Cómo fortalecerla
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+
+      <!-- =====================================
+           CONTENIDO
+      ====================================== -->
+
+      <tbody>
+
+
+        <!-- FILA 1 -->
+
+        <tr>
+
+          <td>
+            Analítica
+          </td>
+
+          <td>
+            Produce y usa evidencia territorial.
+          </td>
+
+          <td>
+            Observatorios, interoperabilidad, alianzas universitarias.
+          </td>
+
+        </tr>
+
+
+
+        <!-- FILA 2 -->
+
+        <tr>
+
+          <td>
+            Estratégica
+          </td>
+
+          <td>
+            Prioriza y sostiene una visión.
+          </td>
+
+          <td>
+            Prospectiva, cartera y acuerdos a largo plazo.
+          </td>
+
+        </tr>
+
+
+
+        <!-- FILA 3 -->
+
+        <tr>
+
+          <td>
+            Operativa
+          </td>
+
+          <td>
+            Estructura, contrata y mantiene proyectos.
+          </td>
+
+          <td>
+            Equipos estables y gestión de activos.
+          </td>
+
+        </tr>
+
+
+
+        <!-- FILA 4 -->
+
+        <tr>
+
+          <td>
+            Fiscal
+          </td>
+
+          <td>
+            Moviliza ingresos y ordena gasto.
+          </td>
+
+          <td>
+            Catastro, gestión tributaria y marcos plurianuales.
+          </td>
+
+        </tr>
+
+
+
+        <!-- FILA 5 -->
+
+        <tr>
+
+          <td>
+            Relacional
+          </td>
+
+          <td>
+            Coordina actores y tramita conflictos.
+          </td>
+
+          <td>
+            Facilitación, redes y acuerdos verificables.
+          </td>
+
+        </tr>
+
+
+
+        <!-- FILA 6 -->
+
+        <tr>
+
+          <td>
+            Democrática
+          </td>
+
+          <td>
+            Incluye voces y rinde cuentas.
+          </td>
+
+          <td>
+            Participación, incidente y datos abiertos.
+          </td>
+
+        </tr>
+
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+
+  <script>
+
+    /* =========================================
+       ANIMACIÓN DE ENTRADA
+    ========================================== */
+
+    const filas = document.querySelectorAll("tbody tr");
+
+
+    const observer = new IntersectionObserver(
+
+      (entradas) => {
+
+        entradas.forEach((entrada) => {
+
+          if (entrada.isIntersecting) {
+
+            const fila = entrada.target;
+
+            const indice = [...filas].indexOf(fila);
+
+
+            /* Entrada más lenta y escalonada */
+
+            setTimeout(() => {
+
+              fila.classList.add("visible");
+
+            }, indice * 220);
+
+
+            observer.unobserve(fila);
+
+          }
+
+        });
+
+      },
+
+      {
+        threshold: 0.15
+      }
+
+    );
+
+
+    filas.forEach((fila) => {
+
+      observer.observe(fila);
+
+    });
+
+  </script>
+
+
+</body>
+</html>

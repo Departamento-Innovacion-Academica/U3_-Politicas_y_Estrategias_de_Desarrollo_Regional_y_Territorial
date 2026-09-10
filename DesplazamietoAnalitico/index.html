@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Desplazamientos Analíticos</title>
+
+  <!-- Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    /* =========================================
+       CONFIGURACIÓN GENERAL
+    ========================================== */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #ffffff;
+      padding: 35px;
+      color: #181818;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 1900px;
+      margin: 0 auto;
+    }
+
+
+    /* =========================================
+       INSTRUCCIÓN
+    ========================================== */
+
+    .instruccion {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 22px;
+    }
+
+    .instruccion p {
+      font-family: "Poppins", sans-serif;
+      font-size: clamp(0.9rem, 1vw, 1.05rem);
+      font-weight: 400;
+      color: #031451;
+      text-align: right;
+    }
+
+    .instruccion strong {
+      font-weight: 600;
+    }
+
+
+    /* =========================================
+       CONTENEDOR DE TARJETAS
+    ========================================== */
+
+    .flip-container {
+      width: 100%;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 28px;
+    }
+
+
+    /* =========================================
+       FLIP CARD
+    ========================================== */
+
+    .flip-card {
+      position: relative;
+
+      width: 100%;
+      min-height: 130px;
+
+      perspective: 1800px;
+
+      cursor: pointer;
+
+      outline: none;
+    }
+
+    .flip-card-inner {
+      position: relative;
+
+      width: 100%;
+      min-height: 130px;
+
+      transform-style: preserve-3d;
+
+      transition:
+        transform 0.75s cubic-bezier(.2, .8, .2, 1);
+    }
+
+
+    /* Tarjeta activa */
+
+    .flip-card.active .flip-card-inner {
+      transform: rotateX(180deg);
+    }
+
+
+    /* =========================================
+       CARAS
+    ========================================== */
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      min-height: 130px;
+      height: 100%;
+
+      border: 3px solid #3555b5;
+      border-radius: 20px;
+
+      background: #ffffff;
+
+      display: flex;
+      align-items: center;
+
+      padding: 30px 48px;
+
+      overflow: hidden;
+
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+
+      box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.07);
+    }
+
+
+    /* =========================================
+       BARRA AZUL IZQUIERDA
+    ========================================== */
+
+    .flip-card-front::before,
+    .flip-card-back::before {
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      bottom: 0;
+      left: 0;
+
+      width: 15px;
+
+      background: #3555b5;
+    }
+
+
+    /* =========================================
+       FRENTE
+    ========================================== */
+
+    .flip-card-front {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .flip-card-front h3 {
+      font-family: "Poppins", sans-serif;
+
+      font-size: clamp(1.25rem, 1.6vw, 1.75rem);
+
+      font-weight: 500;
+
+      color: #031451;
+
+      line-height: 1.4;
+    }
+
+
+    /* =========================================
+       REVERSO
+    ========================================== */
+
+    .flip-card-back {
+      transform: rotateX(180deg);
+
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+
+    .flip-card-back p {
+      font-family: "Poppins", sans-serif;
+
+      font-size: clamp(1rem, 1.35vw, 1.5rem);
+
+      font-weight: 400;
+
+      line-height: 1.55;
+
+      color: #181818;
+    }
+
+
+    /* =========================================
+       ACCESIBILIDAD
+    ========================================== */
+
+    .flip-card:focus-visible {
+      border-radius: 20px;
+
+      outline: 4px solid rgba(53, 85, 181, 0.25);
+
+      outline-offset: 5px;
+    }
+
+
+    /* =========================================
+       RESPONSIVE
+    ========================================== */
+
+    @media (max-width: 768px) {
+
+      body {
+        padding: 20px;
+      }
+
+      .instruccion {
+        margin-bottom: 18px;
+      }
+
+      .instruccion p {
+        font-size: 0.9rem;
+      }
+
+      .flip-container {
+        gap: 20px;
+      }
+
+      .flip-card,
+      .flip-card-inner,
+      .flip-card-front,
+      .flip-card-back {
+        min-height: 160px;
+      }
+
+      .flip-card-front,
+      .flip-card-back {
+        padding: 25px 30px 25px 38px;
+      }
+
+      .flip-card-front::before,
+      .flip-card-back::before {
+        width: 12px;
+      }
+
+      .flip-card-front h3 {
+        font-size: 1.15rem;
+      }
+
+      .flip-card-back p {
+        font-size: 0.95rem;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <main class="contenedor">
+
+
+    <!-- =====================================
+         INSTRUCCIÓN
+    ====================================== -->
+
+    <div class="instruccion">
+      <p>
+        Haga clic sobre la <strong>Tarjeta</strong> para ampliar la información.
+      </p>
+    </div>
+
+
+
+    <!-- =====================================
+         TARJETAS
+    ====================================== -->
+
+    <section class="flip-container">
+
+
+      <!-- =================================
+           PRIMER DESPLAZAMIENTO
+      ================================== -->
+
+      <div
+        class="flip-card"
+        tabindex="0"
+        role="button"
+        aria-label="Primer Desplazamiento Analítico"
+        aria-pressed="false"
+      >
+
+        <div class="flip-card-inner">
+
+
+          <!-- FRENTE -->
+
+          <div class="flip-card-front">
+
+            <h3>
+              Primer Desplazamiento Analítico
+            </h3>
+
+          </div>
+
+
+          <!-- REVERSO -->
+
+          <div class="flip-card-back">
+
+            <p>
+              a. De regiones tratadas como recipientes de recursos a territorios
+              entendidos como sistemas de actores, instituciones y flujos.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================
+           SEGUNDO DESPLAZAMIENTO
+      ================================== -->
+
+      <div
+        class="flip-card"
+        tabindex="0"
+        role="button"
+        aria-label="Segundo Desplazamiento Analítico"
+        aria-pressed="false"
+      >
+
+        <div class="flip-card-inner">
+
+
+          <!-- FRENTE -->
+
+          <div class="flip-card-front">
+
+            <h3>
+              Segundo Desplazamiento Analítico
+            </h3>
+
+          </div>
+
+
+          <!-- REVERSO -->
+
+          <div class="flip-card-back">
+
+            <p>
+              b. De proyectos aislados a carteras integradas con secuencia,
+              complementariedad y mantenimiento.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================
+           TERCER DESPLAZAMIENTO
+      ================================== -->
+
+      <div
+        class="flip-card"
+        tabindex="0"
+        role="button"
+        aria-label="Tercer Desplazamiento Analítico"
+        aria-pressed="false"
+      >
+
+        <div class="flip-card-inner">
+
+
+          <!-- FRENTE -->
+
+          <div class="flip-card-front">
+
+            <h3>
+              Tercer Desplazamiento Analítico
+            </h3>
+
+          </div>
+
+
+          <!-- REVERSO -->
+
+          <div class="flip-card-back">
+
+            <p>
+              c. De evaluar la ejecución física y financiera a examinar los
+              cambios en la productividad, el bienestar, la sostenibilidad
+              y las brechas.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+
+
+  <script>
+
+    const tarjetas = document.querySelectorAll(".flip-card");
+
+    tarjetas.forEach((tarjeta) => {
+
+      function girarTarjeta() {
+
+        tarjeta.classList.toggle("active");
+
+        const activa = tarjeta.classList.contains("active");
+
+        tarjeta.setAttribute(
+          "aria-pressed",
+          activa ? "true" : "false"
+        );
+
+      }
+
+
+      /* CLIC */
+
+      tarjeta.addEventListener("click", girarTarjeta);
+
+
+      /* TECLADO */
+
+      tarjeta.addEventListener("keydown", (event) => {
+
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+
+          event.preventDefault();
+
+          girarTarjeta();
+
+        }
+
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>

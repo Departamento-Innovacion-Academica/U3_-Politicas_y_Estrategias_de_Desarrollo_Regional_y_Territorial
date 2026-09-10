@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiencias y mecanismos</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #ffffff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tabla-contenedor {
+            max-width: 1600px;
+            margin: 0 auto;
+            border: 1px solid #e5e5e5;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        thead {
+            background: #3d55ad;
+        }
+
+        th {
+            color: #ffffff;
+            font-weight: 700;
+            text-align: left;
+            padding: 20px 25px;
+            font-size: clamp(16px, 1.5vw, 22px);
+        }
+
+        th:first-child {
+            width: 25%;
+        }
+
+        th:nth-child(2) {
+            width: 40%;
+        }
+
+        th:last-child {
+            width: 35%;
+        }
+
+        tbody tr {
+            opacity: 0;
+            transition:
+                transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 1.1s ease;
+        }
+
+        tbody tr:nth-child(odd) {
+            transform: translateX(-140px);
+        }
+
+        tbody tr:nth-child(even) {
+            transform: translateX(140px);
+        }
+
+        tbody tr.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        td {
+            padding: 20px 25px;
+            vertical-align: top;
+            color: #242424;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(14px, 1.2vw, 18px);
+            line-height: 1.55;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 12px;
+            }
+
+            .tabla-contenedor {
+                border-radius: 16px;
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 900px;
+            }
+
+            th,
+            td {
+                padding: 16px 20px;
+            }
+
+            th {
+                font-size: 16px;
+            }
+
+            td {
+                font-size: 14px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            tbody tr {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>Experiencia</th>
+                    <th>Mecanismo transferible</th>
+                    <th>Adaptación colombiana</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td><strong>Cohesión UE</strong></td>
+                    <td>Programación plurianual y adicionalidad.</td>
+                    <td>Carteras regionales con cofinanciación.</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Smart Specialisation</strong></td>
+                    <td>Descubrimiento y experimentación.</td>
+                    <td>Agendas departamentales/funcionales.</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Contratos territoriales</strong></td>
+                    <td>Compromisos multinivel verificables.</td>
+                    <td>Pactos con hitos y tablero común.</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Agencias regionales</strong></td>
+                    <td>Intermediación técnica estable.</td>
+                    <td>Secretarías técnicas asociativas.</td>
+                </tr>
+
+                <tr>
+                    <td><strong>Presupuesto participativo</strong></td>
+                    <td>Priorización ciudadana y control.</td>
+                    <td>Escala submunicipal con devolución.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const filas = document.querySelectorAll("tbody tr");
+
+        const observer = new IntersectionObserver((entradas) => {
+            entradas.forEach((entrada) => {
+                if (entrada.isIntersecting) {
+                    const fila = entrada.target;
+                    const indice = Array.from(filas).indexOf(fila);
+
+                    setTimeout(() => {
+                        fila.classList.add("visible");
+                    }, indice * 220);
+
+                    observer.unobserve(fila);
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        filas.forEach((fila) => observer.observe(fila));
+    </script>
+
+</body>
+</html>
