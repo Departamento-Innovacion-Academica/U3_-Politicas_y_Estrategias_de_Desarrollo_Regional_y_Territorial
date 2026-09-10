@@ -344,6 +344,29 @@
       }
 
     }
+    /* =========================================
+       INSTRUCCIÓN
+    ========================================== */
+
+    .instruccion {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 22px;
+    }
+
+    .instruccion p {
+      font-family: "Poppins", sans-serif;
+      font-size: clamp(0.9rem, 1vw, 1.05rem);
+      font-weight: 400;
+      color: #031451;
+      text-align: right;
+    }
+
+    .instruccion strong {
+      font-weight: 600;
+    }
+
 
 
     /* =========================================
@@ -354,6 +377,13 @@
 
       body {
         padding: 20px 15px;
+      }
+        .instruccion {
+        margin-bottom: 18px;
+      }
+
+      .instruccion p {
+        font-size: 0.9rem;
       }
 
       .acordeon {
@@ -434,6 +464,14 @@
 
 <body>
 
+  <div class="instruccion">
+      <p>
+        
+        Haga clic sobre el símbolo  <strong>(+)</strong> para ampliar la información.
+      </p>
+    </div>
+
+
 
   <div class="acordeon">
 
@@ -450,7 +488,7 @@
       >
 
         <span class="letra">
-          a. Primer Diseño Distributivo
+          a. Desglosar
         </span>
 
         <span class="icono"></span>
@@ -486,7 +524,7 @@
       >
 
         <span class="letra">
-          b. Segundo Diseño Distributivo
+          b. No medir
         </span>
 
         <span class="icono"></span>
@@ -522,7 +560,7 @@
       >
 
         <span class="letra">
-          c. Tercer Diseño Distributivo
+          c. Analizar
         </span>
 
         <span class="icono"></span>
@@ -558,7 +596,7 @@
       >
 
         <span class="letra">
-          d. Cuarto Diseño Distributivo
+          d. Coincidir
         </span>
 
         <span class="icono"></span>
@@ -594,7 +632,7 @@
       >
 
         <span class="letra">
-          e. Quinto Diseño Distributivo
+          e. Incluir
         </span>
 
         <span class="icono"></span>
