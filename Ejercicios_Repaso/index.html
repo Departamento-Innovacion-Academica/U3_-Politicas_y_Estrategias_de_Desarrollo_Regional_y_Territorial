@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ejercicio de Repaso - Desarrollo Regional</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fb;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .container {
+            background: #ffffff;
+            max-width: 780px;
+            width: 100%;
+            padding: 48px 44px 40px;
+            border-radius: 24px;
+            box-shadow:
+                0 4px 24px rgba(0, 16, 72, 0.08),
+                0 1px 4px rgba(0, 16, 72, 0.04);
+        }
+
+        /* HEADER */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .title {
+            color: #001048;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .title .badge {
+            background: #001048;
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 14px;
+            border-radius: 100px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .progress-text {
+            color: #6b7a9f;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: #f0f2f7;
+            padding: 5px 18px;
+            border-radius: 100px;
+        }
+
+        .progress-text span {
+            color: #001048;
+            font-weight: 700;
+        }
+
+        /* PROGRESO */
+
+        .progress-bar-wrapper {
+            width: 100%;
+            height: 4px;
+            background: #e9ecf3;
+            border-radius: 10px;
+            margin: 20px 0 32px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #3348A4;
+            border-radius: 10px;
+            width: 25%;
+            transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* TARJETA */
+
+        .question-card {
+            background: #fafbff;
+            border-radius: 16px;
+            padding: 32px 32px 28px;
+            border: 1px solid #eef0f6;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-number {
+            color: #3348A4;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            color: #001048;
+            font-size: 1.2rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 28px;
+            letter-spacing: -0.2px;
+        }
+
+        /* OPCIONES */
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: #ffffff;
+            border: 1.5px solid #e4e8f0;
+            border-radius: 12px;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #1a264a;
+            font-weight: 450;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .option-label:hover:not(.disabled) {
+            border-color: #3348A4;
+            background: #f8f9ff;
+            transform: translateX(3px);
+        }
+
+        .radio-custom {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            border: 2px solid #c8d0df;
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.2s ease;
+            margin-top: 1px;
+            background: #ffffff;
+        }
+
+        .radio-custom::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 10px;
+            height: 10px;
+            background: #3348A4;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+
+        .option-label input[type="radio"] {
+            display: none;
+        }
+
+        .option-label input[type="radio"]:checked + .radio-custom {
+            border-color: #3348A4;
+            background: #3348A4;
+        }
+
+        .option-label input[type="radio"]:checked + .radio-custom::after {
+            transform: translate(-50%, -50%) scale(1);
+            background: #ffffff;
+        }
+
+        .letter {
+            font-weight: 600;
+            color: #3348A4;
+            font-size: 0.8rem;
+            min-width: 20px;
+        }
+
+        /* FEEDBACK */
+
+        .feedback {
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            background: #f8faff;
+            border-left: 4px solid #3348A4;
+            display: none;
+            color: #1a264a;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeSlide 0.35s ease;
+        }
+
+        .feedback.correct {
+            border-left-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .feedback.incorrect {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .feedback .feedback-icon {
+            font-weight: 700;
+            margin-right: 6px;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ESTADOS */
+
+        .option-label.correct {
+            border-color: #22c55e !important;
+            background: #f0fdf4 !important;
+        }
+
+        .option-label.correct .radio-custom {
+            border-color: #22c55e !important;
+            background: #22c55e !important;
+        }
+
+        .option-label.correct .radio-custom::after {
+            transform: translate(-50%, -50%) scale(1) !important;
+            background: #ffffff !important;
+        }
+
+        .option-label.wrong {
+            border-color: #ef4444 !important;
+            background: #fef2f2 !important;
+        }
+
+        .option-label.wrong .radio-custom {
+            border-color: #ef4444 !important;
+            background: #ef4444 !important;
+        }
+
+        .option-label.wrong .radio-custom::after {
+            transform: translate(-50%, -50%) scale(1) !important;
+            background: #ffffff !important;
+        }
+
+        .option-label.disabled {
+            opacity: 0.7;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .option-label.selected {
+            border-color: #3348A4;
+            background: #f5f7ff;
+        }
+
+        /* VERDADERO / FALSO */
+
+        .tf-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 5px;
+        }
+
+        .tf-option {
+            position: relative;
+        }
+
+        .tf-option input {
+            display: none;
+        }
+
+        .tf-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70px;
+            background: #ffffff;
+            border: 1.5px solid #e4e8f0;
+            border-radius: 14px;
+            color: #3348A4;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tf-label:hover {
+            border-color: #3348A4;
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+
+        .tf-option input:checked + .tf-label {
+            background: #3348A4;
+            border-color: #3348A4;
+            color: #ffffff;
+        }
+
+        .tf-label.correct {
+            background: #f0fdf4 !important;
+            border-color: #22c55e !important;
+            color: #15803d !important;
+        }
+
+        .tf-label.wrong {
+            background: #fef2f2 !important;
+            border-color: #ef4444 !important;
+            color: #b91c1c !important;
+        }
+
+        /* ARRASTRE */
+
+        .drag-instruction {
+            background: #f0f2f7;
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #4a5a7a;
+            font-size: 0.85rem;
+            margin-bottom: 18px;
+        }
+
+        .drag-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .drag-item {
+            background: #001048;
+            color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: grab;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .drag-item:hover {
+            background: #3348A4;
+            transform: translateY(-2px);
+        }
+
+        .drag-item.dragging {
+            opacity: 0.5;
+        }
+
+        .definitions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .drop-zone {
+            background: #ffffff;
+            border: 1.5px dashed #c8d0df;
+            border-radius: 12px;
+            padding: 13px 16px;
+            min-height: 58px;
+            transition: all 0.2s ease;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #3348A4;
+            background: #f5f7ff;
+        }
+
+        .definition-title {
+            color: #3348A4;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .definition-text {
+            color: #4a5a7a;
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+
+        .dropped-item {
+            display: inline-block;
+            background: #3348A4;
+            color: #ffffff;
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin-top: 7px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .drop-zone.correct {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .drop-zone.incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        /* BOTONES */
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 28px;
+            gap: 14px;
+        }
+
+        .btn {
+            padding: 11px 28px;
+            border-radius: 60px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.2px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-secondary {
+            background: #f0f2f7;
+            color: #3348A4;
+            border: 1.5px solid transparent;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #e4e8f2;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: #001048;
+            color: #ffffff;
+            border: 1.5px solid #001048;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #001a5e;
+            border-color: #001a5e;
+            box-shadow: 0 4px 16px rgba(0, 16, 72, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #3348A4;
+            color: #ffffff;
+            border: 1.5px solid #3348A4;
+            font-weight: 700;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #2a3d8f;
+            border-color: #2a3d8f;
+            box-shadow: 0 4px 20px rgba(51, 72, 164, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-reiniciar {
+            background: transparent;
+            color: #3348A4;
+            border: 1.5px solid #3348A4;
+        }
+
+        .btn-reiniciar:hover {
+            background: #f0f2f7;
+            transform: translateY(-1px);
+        }
+
+        /* RESULTADOS */
+
+        .results-screen {
+            display: none;
+            text-align: center;
+            padding: 20px 0 10px;
+        }
+
+        .results-screen.show {
+            display: block;
+            animation: fadeSlide 0.5s ease;
+        }
+
+        .results-score {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #001048;
+            line-height: 1;
+            margin: 16px 0 4px;
+        }
+
+        .results-score .total {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #6b7a9f;
+        }
+
+        .results-label {
+            font-size: 1.1rem;
+            color: #3348A4;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .results-message {
+            font-size: 1rem;
+            color: #4a5a7a;
+            margin-top: 8px;
+            padding: 16px 24px;
+            background: #f0f2f7;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .results-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 24px 0 32px;
+        }
+
+        .results-stats .stat {
+            text-align: center;
+        }
+
+        .results-stats .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #001048;
+        }
+
+        .results-stats .stat-label {
+            font-size: 0.8rem;
+            color: #6b7a9f;
+            font-weight: 500;
+        }
+
+        .correct-count {
+            color: #22c55e !important;
+        }
+
+        .incorrect-count {
+            color: #ef4444 !important;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .results-actions .btn {
+            flex: 0 1 auto;
+            min-width: 160px;
+        }
+
+        .hide-when-results {
+            display: block;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 640px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 24px 18px 28px;
+                border-radius: 18px;
+            }
+
+            .title {
+                font-size: 1.15rem;
+            }
+
+            .question-card {
+                padding: 20px 16px;
+                min-height: 240px;
+            }
+
+            .question-text {
+                font-size: 1rem;
+                margin-bottom: 20px;
+            }
+
+            .option-label {
+                padding: 12px 14px;
+                font-size: 0.88rem;
+                gap: 12px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .tf-options {
+                grid-template-columns: 1fr;
+            }
+
+            .drag-items {
+                flex-direction: column;
+            }
+
+            .drag-item {
+                text-align: center;
+            }
+
+            .results-score {
+                font-size: 3rem;
+            }
+
+            .results-stats {
+                gap: 20px;
+            }
+
+            .results-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .results-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container" id="app">
+
+    <!-- HEADER -->
+    <div class="header hide-when-results">
+        <div class="title">
+            Repaso
+            <span class="badge">Desarrollo Regional</span>
+        </div>
+
+        <div class="progress-text">
+            <span id="currentNum">1</span> /
+            <span id="totalNum">4</span>
+        </div>
+    </div>
+
+    <!-- BARRA DE PROGRESO -->
+    <div class="progress-bar-wrapper hide-when-results">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- PREGUNTA -->
+    <div class="question-card hide-when-results" id="questionCard">
+
+        <div class="question-number" id="qNumber">
+            EJERCICIO 1
+        </div>
+
+        <div class="question-text" id="qText">
+            Cargando pregunta...
+        </div>
+
+        <div class="options" id="optionsContainer"></div>
+
+        <div class="feedback" id="feedback">
+            <span class="feedback-icon" id="feedbackIcon">💡</span>
+            <span id="feedbackText"></span>
+        </div>
+
+    </div>
+
+    <!-- NAVEGACIÓN -->
+    <div class="nav-buttons hide-when-results" id="navButtons">
+
+        <button class="btn btn-secondary" id="prevBtn" disabled>
+            ← Anterior
+        </button>
+
+        <button class="btn btn-primary" id="nextBtn">
+            Siguiente →
+        </button>
+
+    </div>
+
+    <!-- RESULTADOS -->
+    <div class="results-screen" id="resultsScreen">
+
+        <div style="font-size:3rem;margin-bottom:4px;">
+            📊
+        </div>
+
+        <div class="results-label">
+            Resultado del Repaso
+        </div>
+
+        <div class="results-score">
+
+            <span id="scoreNumber">0</span>
+
+            <span class="total">
+                / <span id="totalQuestions">4</span>
+            </span>
+
+        </div>
+
+        <div class="results-message" id="resultMessage">
+            ¡Excelente trabajo!
+        </div>
+
+        <div class="results-stats">
+
+            <div class="stat">
+                <div class="stat-number correct-count" id="correctCount">
+                    0
+                </div>
+                <div class="stat-label">
+                    ✅ Correctas
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-number incorrect-count" id="incorrectCount">
+                    0
+                </div>
+                <div class="stat-label">
+                    ❌ Incorrectas
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-number" id="percentageDisplay">
+                    0%
+                </div>
+                <div class="stat-label">
+                    🎯 Precisión
+                </div>
+            </div>
+
+        </div>
+
+        <div class="results-actions">
+
+            <button class="btn btn-primary" id="revisarBtn">
+                🔍 Revisar respuestas
+            </button>
+
+            <button class="btn btn-reiniciar" id="reiniciarBtn">
+                🔄 Reintentar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   PREGUNTAS
+========================================================== */
+
+const questions = [
+
+    {
+        id: 1,
+        type: "tf",
+
+        text: "Una política territorial consiste únicamente en aplicar una misma política nacional en diferentes departamentos.",
+
+        correct: false,
+
+        feedbackCorrect:
+            "¡Correcto! Una política territorial reconoce que los problemas, oportunidades y efectos de la acción pública cambian según las características y relaciones de cada territorio.",
+
+        feedbackWrong:
+            "Revisa nuevamente. Aplicar una misma política nacional en distintos lugares no garantiza un enfoque territorial; es necesario considerar las particularidades económicas, sociales, institucionales y funcionales de cada espacio."
+    },
+
+    {
+        id: 2,
+        type: "tf",
+
+        text: "La gobernanza multinivel busca coordinar a diferentes niveles de gobierno, comunidades y actores privados sin eliminar sus respectivas competencias.",
+
+        correct: true,
+
+        feedbackCorrect:
+            "¡Muy bien! La gobernanza multinivel promueve la coordinación entre nación, departamentos, municipios, autoridades ambientales, comunidades y actores privados.",
+
+        feedbackWrong:
+            "Inténtalo nuevamente. La coordinación entre distintos actores y niveles territoriales es precisamente uno de los fundamentos de la gobernanza multinivel."
+    },
+
+    {
+        id: 3,
+        type: "mc",
+
+        text: "¿Cuál de las siguientes opciones describe mejor una teoría de cambio dentro de una estrategia de desarrollo regional?",
+
+        options: [
+            "Una lista de obras que deben ejecutarse en el territorio.",
+            "Una descripción de los recursos financieros disponibles.",
+            "Una explicación de cómo los insumos y actividades generan productos, resultados e impactos, considerando supuestos y riesgos.",
+            "Una relación de las instituciones que participan en un proyecto."
+        ],
+
+        correctIndex: 2,
+
+        feedbackCorrect:
+            "¡Correcto! La teoría de cambio permite explicar la relación entre las acciones realizadas y los cambios que se espera conseguir, identificando también los supuestos y riesgos que pueden afectar los resultados.",
+
+        feedbackWrong:
+            "Revisa el concepto. Aunque las obras, los recursos y los actores hacen parte de una estrategia, la teoría de cambio explica cómo y por qué las intervenciones deberían producir los resultados e impactos esperados."
+    },
+
+    {
+        id: 4,
+        type: "drag",
+
+        text: "Arrastre cada elemento hacia la definición que le corresponde.",
+
+        pairs: [
+
+            {
+                element: "Insumo",
+                definition: "Recursos, equipo técnico e información disponibles."
+            },
+
+            {
+                element: "Actividad",
+                definition: "Acciones como asistencia, obras, regulación o coordinación."
+            },
+
+            {
+                element: "Producto",
+                definition: "Servicio o activo entregado como resultado directo de la intervención."
+            },
+
+            {
+                element: "Resultado",
+                definition: "Cambio en la conducta o en el desempeño de la población objetivo."
+            },
+
+            {
+                element: "Impacto",
+                definition: "Cambio sostenible atribuible a la intervención."
+            }
+
+        ],
+
+        feedbackCorrect:
+            "¡Excelente! Has identificado correctamente los diferentes niveles de la cadena de intervención. Recuerda que una estrategia territorial no debe limitarse a verificar cuánto se gastó o qué se construyó; también debe analizar los cambios generados en el territorio.",
+
+        feedbackWrong:
+            "Revisa la secuencia: primero se utilizan los insumos, con ellos se realizan actividades, estas generan productos, los productos buscan producir resultados y, finalmente, contribuir a un impacto sostenible."
+    }
+
+];
+
+
+/* ==========================================================
+   ESTADO
+========================================================== */
+
+let currentIndex = 0;
+let answered = false;
+let selectedOption = null;
+let results = [];
+let dragAnswers = {};
+
+
+/* ==========================================================
+   ELEMENTOS
+========================================================== */
+
+const qNumber = document.getElementById("qNumber");
+const qText = document.getElementById("qText");
+const optionsContainer = document.getElementById("optionsContainer");
+
+const feedbackDiv = document.getElementById("feedback");
+const feedbackText = document.getElementById("feedbackText");
+const feedbackIcon = document.getElementById("feedbackIcon");
+
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+const currentNum = document.getElementById("currentNum");
+const totalNum = document.getElementById("totalNum");
+const progressBar = document.getElementById("progressBar");
+
+const resultsScreen = document.getElementById("resultsScreen");
+
+const scoreNumber = document.getElementById("scoreNumber");
+const totalQuestions = document.getElementById("totalQuestions");
+const correctCount = document.getElementById("correctCount");
+const incorrectCount = document.getElementById("incorrectCount");
+const percentageDisplay = document.getElementById("percentageDisplay");
+
+const resultMessage = document.getElementById("resultMessage");
+
+const revisarBtn = document.getElementById("revisarBtn");
+const reiniciarBtn = document.getElementById("reiniciarBtn");
+
+
+/* ==========================================================
+   RENDER
+========================================================== */
+
+function renderQuestion(index) {
+
+    const q = questions[index];
+
+    qNumber.textContent = `EJERCICIO ${q.id}`;
+    qText.textContent = q.text;
+
+    currentNum.textContent = index + 1;
+    totalNum.textContent = questions.length;
+
+    progressBar.style.width =
+        `${((index + 1) / questions.length) * 100}%`;
+
+    optionsContainer.innerHTML = "";
+
+    feedbackDiv.className = "feedback";
+    feedbackText.textContent = "";
+
+    answered = false;
+    selectedOption = null;
+
+    if (q.type === "tf") {
+
+        renderTrueFalse(q);
+
+    } else if (q.type === "mc") {
+
+        renderMultipleChoice(q);
+
+    } else if (q.type === "drag") {
+
+        renderDragExercise(q);
+
+    }
+
+    prevBtn.disabled = index === 0;
+
+    if (index === questions.length - 1) {
+
+        nextBtn.textContent = "✅ Finalizar";
+        nextBtn.className = "btn btn-success";
+
+    } else {
+
+        nextBtn.textContent = "Siguiente →";
+        nextBtn.className = "btn btn-primary";
+
+    }
+
+    nextBtn.disabled = false;
+
+}
+
+
+/* ==========================================================
+   VERDADERO / FALSO
+========================================================== */
+
+function renderTrueFalse(q) {
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "tf-options";
+
+    const options = [
+        {
+            value: true,
+            text: "✓ Verdadero"
+        },
+        {
+            value: false,
+            text: "✕ Falso"
+        }
+    ];
+
+    options.forEach(option => {
+
+        const div = document.createElement("div");
+        div.className = "tf-option";
+
+        const input = document.createElement("input");
+
+        input.type = "radio";
+        input.name = "tf";
+        input.value = option.value;
+
+        const label = document.createElement("label");
+        label.className = "tf-label";
+        label.textContent = option.text;
+
+        label.appendChild(input);
+
+        div.appendChild(input);
+        div.appendChild(label);
+
+        label.addEventListener("click", () => {
+
+            if (answered) return;
+
+            selectedOption = option.value;
+
+            document.querySelectorAll(".tf-label")
+                .forEach(el => el.classList.remove("selected"));
+
+            label.classList.add("selected");
+
+            input.checked = true;
+
+        });
+
+        wrapper.appendChild(div);
+
+    });
+
+    optionsContainer.appendChild(wrapper);
+}
+
+
+/* ==========================================================
+   SELECCIÓN MÚLTIPLE
+========================================================== */
+
+function renderMultipleChoice(q) {
+
+    const letters = ["A", "B", "C", "D"];
+
+    q.options.forEach((option, i) => {
+
+        const label = document.createElement("label");
+        label.className = "option-label";
+
+        const radio = document.createElement("input");
+
+        radio.type = "radio";
+        radio.name = "question";
+        radio.value = i;
+
+        const radioSpan = document.createElement("span");
+        radioSpan.className = "radio-custom";
+
+        const letterSpan = document.createElement("span");
+        letterSpan.className = "letter";
+        letterSpan.textContent = letters[i] + ".";
+
+        const textSpan = document.createElement("span");
+        textSpan.textContent = option;
+
+        label.appendChild(radio);
+        label.appendChild(radioSpan);
+        label.appendChild(letterSpan);
+        label.appendChild(textSpan);
+
+        label.addEventListener("click", function () {
+
+            if (answered) return;
+
+            selectedOption = i;
+
+            radio.checked = true;
+
+            document.querySelectorAll(".option-label")
+                .forEach(el => el.classList.remove("selected"));
+
+            label.classList.add("selected");
+
+        });
+
+        optionsContainer.appendChild(label);
+
+    });
+
+}
+
+
+/* ==========================================================
+   ARRASTRE
+========================================================== */
+
+function renderDragExercise(q) {
+
+    const instruction = document.createElement("div");
+
+    instruction.className = "drag-instruction";
+
+    instruction.textContent =
+        "💡 Arrastra cada elemento azul hasta la definición que corresponda.";
+
+    optionsContainer.appendChild(instruction);
+
+
+    const shuffled = [...q.pairs]
+        .sort(() => Math.random() - 0.5);
+
+
+    const dragItems = document.createElement("div");
+    dragItems.className = "drag-items";
+
+
+    shuffled.forEach((pair, index) => {
+
+        const item = document.createElement("div");
+
+        item.className = "drag-item";
+        item.textContent = pair.element;
+        item.draggable = true;
+        item.dataset.element = pair.element;
+
+        item.addEventListener("dragstart", e => {
+
+            e.dataTransfer.setData(
+                "text/plain",
+                pair.element
+            );
+
+            item.classList.add("dragging");
+
+        });
+
+        item.addEventListener("dragend", () => {
+
+            item.classList.remove("dragging");
+
+        });
+
+        dragItems.appendChild(item);
+
+    });
+
+    optionsContainer.appendChild(dragItems);
+
+
+    const definitions = document.createElement("div");
+    definitions.className = "definitions";
+
+
+    q.pairs.forEach(pair => {
+
+        const zone = document.createElement("div");
+
+        zone.className = "drop-zone";
+
+        zone.dataset.answer = pair.element;
+
+        const title = document.createElement("div");
+
+        title.className = "definition-title";
+        title.textContent = pair.element;
+
+        const definition = document.createElement("div");
+
+        definition.className = "definition-text";
+        definition.textContent = pair.definition;
+
+        zone.appendChild(title);
+        zone.appendChild(definition);
+
+
+        zone.addEventListener("dragover", e => {
+
+            e.preventDefault();
+
+            if (!answered) {
+                zone.classList.add("drag-over");
+            }
+
+        });
+
+
+        zone.addEventListener("dragleave", () => {
+
+            zone.classList.remove("drag-over");
+
+        });
+
+
+        zone.addEventListener("drop", e => {
+
+            e.preventDefault();
+
+            if (answered) return;
+
+            zone.classList.remove("drag-over");
+
+            const element =
+                e.dataTransfer.getData("text/plain");
+
+            if (!element) return;
+
+
+            dragAnswers[element] = pair.element;
+
+            const oldItem =
+                zone.querySelector(".dropped-item");
+
+            if (oldItem) {
+                oldItem.remove();
+            }
+
+
+            const dropped =
+                document.createElement("span");
+
+            dropped.className = "dropped-item";
+            dropped.textContent = element;
+
+            zone.appendChild(dropped);
+
+
+            /* Ocultar el elemento original */
+
+            document.querySelectorAll(".drag-item")
+                .forEach(item => {
+
+                    if (item.dataset.element === element) {
+                        item.style.display = "none";
+                    }
+
+                });
+
+        });
+
+
+        definitions.appendChild(zone);
+
+    });
+
+    optionsContainer.appendChild(definitions);
+
+}
+
+
+/* ==========================================================
+   VALIDACIÓN
+========================================================== */
+
+function validateAndShowFeedback() {
+
+    const q = questions[currentIndex];
+
+
+    /* VERDADERO / FALSO */
+
+    if (q.type === "tf") {
+
+        if (selectedOption === null) {
+
+            alert("Por favor, selecciona Verdadero o Falso antes de continuar.");
+
+            return false;
+
+        }
+
+        answered = true;
+
+        const isCorrect =
+            selectedOption === q.correct;
+
+        results[currentIndex] = isCorrect;
+
+
+        document.querySelectorAll(".tf-label")
+            .forEach(label => {
+
+                label.style.pointerEvents = "none";
+
+            });
+
+
+        feedbackIcon.textContent =
+            isCorrect ? "✅" : "❌";
+
+        feedbackText.textContent =
+            isCorrect
+                ? q.feedbackCorrect
+                : q.feedbackWrong;
+
+        feedbackDiv.className =
+            "feedback show " +
+            (isCorrect ? "correct" : "incorrect");
+
+
+        return true;
+
+    }
+
+
+    /* SELECCIÓN MÚLTIPLE */
+
+    if (q.type === "mc") {
+
+        if (selectedOption === null) {
+
+            alert("Por favor, selecciona una opción antes de continuar.");
+
+            return false;
+
+        }
+
+        answered = true;
+
+        const isCorrect =
+            selectedOption === q.correctIndex;
+
+        results[currentIndex] = isCorrect;
+
+
+        const labels =
+            document.querySelectorAll(".option-label");
+
+
+        labels.forEach((label, index) => {
+
+            label.classList.add("disabled");
+
+            const radio =
+                label.querySelector("input");
+
+            if (radio) {
+                radio.disabled = true;
+            }
+
+
+            if (index === q.correctIndex) {
+
+                label.classList.add("correct");
+
+            } else if (
+                index === selectedOption &&
+                !isCorrect
+            ) {
+
+                label.classList.add("wrong");
+
+            }
+
+        });
+
+
+        feedbackIcon.textContent =
+            isCorrect ? "✅" : "❌";
+
+        feedbackText.textContent =
+            isCorrect
+                ? q.feedbackCorrect
+                : q.feedbackWrong;
+
+        feedbackDiv.className =
+            "feedback show " +
+            (isCorrect ? "correct" : "incorrect");
+
+
+        return true;
+
+    }
+
+
+    /* ARRASTRE */
+
+    if (q.type === "drag") {
+
+        const totalPairs = q.pairs.length;
+
+        const completedPairs =
+            Object.keys(dragAnswers).length;
+
+
+        if (completedPairs < totalPairs) {
+
+            alert(
+                "Completa todas las relaciones antes de continuar."
+            );
+
+            return false;
+
+        }
+
+
+        answered = true;
+
+
+        let correct = 0;
+
+
+        q.pairs.forEach(pair => {
+
+            if (
+                dragAnswers[pair.element] === pair.element
+            ) {
+
+                correct++;
+
+            }
+
+        });
+
+
+        const isCorrect =
+            correct === totalPairs;
+
+        results[currentIndex] = isCorrect;
+
+
+        document.querySelectorAll(".drop-zone")
+            .forEach(zone => {
+
+                const answer = zone.dataset.answer;
+
+                const dropped =
+                    zone.querySelector(".dropped-item");
+
+                if (!dropped) return;
+
+                const element =
+                    dropped.textContent;
+
+                if (element === answer) {
+
+                    zone.classList.add("correct");
+
+                } else {
+
+                    zone.classList.add("incorrect");
+
+                }
+
+            });
+
+
+        feedbackIcon.textContent =
+            isCorrect ? "✅" : "❌";
+
+        feedbackText.textContent =
+            isCorrect
+                ? q.feedbackCorrect
+                : q.feedbackWrong;
+
+        feedbackDiv.className =
+            "feedback show " +
+            (isCorrect ? "correct" : "incorrect");
+
+
+        return true;
+
+    }
+
+}
+
+
+/* ==========================================================
+   SIGUIENTE
+========================================================== */
+
+function goToNext() {
+
+    if (!answered) {
+
+        const valid =
+            validateAndShowFeedback();
+
+        if (!valid) return;
+
+        return;
+
+    }
+
+
+    if (currentIndex < questions.length - 1) {
+
+        currentIndex++;
+
+        dragAnswers = {};
+
+        renderQuestion(currentIndex);
+
+    } else {
+
+        showResults();
+
+    }
+
+}
+
+
+/* ==========================================================
+   ANTERIOR
+========================================================== */
+
+function goToPrev() {
+
+    if (currentIndex > 0) {
+
+        currentIndex--;
+
+        dragAnswers = {};
+
+        renderQuestion(currentIndex);
+
+    }
+
+}
+
+
+/* ==========================================================
+   RESULTADOS
+========================================================== */
+
+function showResults() {
+
+    const total =
+        questions.length;
+
+    const correct =
+        results.filter(r => r === true).length;
+
+    const incorrect =
+        total - correct;
+
+    const percentage =
+        Math.round((correct / total) * 100);
+
+
+    scoreNumber.textContent =
+        correct;
+
+    totalQuestions.textContent =
+        total;
+
+    correctCount.textContent =
+        correct;
+
+    incorrectCount.textContent =
+        incorrect;
+
+    percentageDisplay.textContent =
+        percentage + "%";
+
+
+    let message = "";
+
+
+    if (percentage === 100) {
+
+        message =
+            "🌟 ¡Perfecto! Dominas los conceptos fundamentales del desarrollo regional.";
+
+    } else if (percentage >= 75) {
+
+        message =
+            "👏 ¡Muy bien! Tienes un buen dominio de los conceptos trabajados.";
+
+    } else if (percentage >= 50) {
+
+        message =
+            "📖 Buen trabajo. Revisa los conceptos que presentaron dificultad.";
+
+    } else {
+
+        message =
+            "📚 Te recomiendo repasar nuevamente los contenidos antes de continuar.";
+
+    }
+
+
+    resultMessage.textContent =
+        message;
+
+
+    document.querySelectorAll(".hide-when-results")
+        .forEach(el => {
+
+            el.style.display = "none";
+
+        });
+
+
+    resultsScreen.classList.add("show");
+
+}
+
+
+/* ==========================================================
+   REVISAR
+========================================================== */
+
+function revisarRespuestas() {
+
+    document.querySelectorAll(".hide-when-results")
+        .forEach(el => {
+
+            el.style.display = "";
+
+        });
+
+
+    resultsScreen.classList.remove("show");
+
+
+    currentIndex = 0;
+
+    dragAnswers = {};
+
+    renderQuestion(currentIndex);
+
+}
+
+
+/* ==========================================================
+   REINICIAR
+========================================================== */
+
+function resetQuiz() {
+
+    currentIndex = 0;
+
+    answered = false;
+
+    selectedOption = null;
+
+    results = [];
+
+    dragAnswers = {};
+
+
+    document.querySelectorAll(".hide-when-results")
+        .forEach(el => {
+
+            el.style.display = "";
+
+        });
+
+
+    resultsScreen.classList.remove("show");
+
+
+    renderQuestion(0);
+
+}
+
+
+/* ==========================================================
+   EVENTOS
+========================================================== */
+
+nextBtn.addEventListener(
+    "click",
+    goToNext
+);
+
+prevBtn.addEventListener(
+    "click",
+    goToPrev
+);
+
+reiniciarBtn.addEventListener(
+    "click",
+    resetQuiz
+);
+
+revisarBtn.addEventListener(
+    "click",
+    revisarRespuestas
+);
+
+
+/* ==========================================================
+   TECLADO
+========================================================== */
+
+document.addEventListener("keydown", e => {
+
+    if (resultsScreen.classList.contains("show")) {
+
+        if (e.key === "Enter") {
+
+            e.preventDefault();
+
+            revisarBtn.click();
+
+        }
+
+        if (e.key === "r" || e.key === "R") {
+
+            e.preventDefault();
+
+            reiniciarBtn.click();
+
+        }
+
+        return;
+
+    }
+
+
+    if (
+        e.key === "ArrowRight" ||
+        e.key === "Enter"
+    ) {
+
+        e.preventDefault();
+
+        goToNext();
+
+    }
+
+
+    if (e.key === "ArrowLeft") {
+
+        e.preventDefault();
+
+        goToPrev();
+
+    }
+
+});
+
+
+/* ==========================================================
+   INICIO
+========================================================== */
+
+renderQuestion(0);
+
+console.log(
+    "📘 Ejercicio de repaso — Desarrollo Regional"
+);
+
+console.log(
+    "🎨 Paleta: #001048 / #3348A4"
+);
+
+</script>
+
+</body>
+</html>
