@@ -409,17 +409,21 @@
             background: #f5f7ff;
         }
 
-        .definition-title {
-            color: #3348A4;
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-bottom: 4px;
-        }
-
         .definition-text {
             color: #4a5a7a;
             font-size: 0.82rem;
             line-height: 1.4;
+        }
+
+        .drop-hint {
+            color: #8a95ad;
+            font-size: 0.72rem;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        .drop-zone:has(.dropped-item) .drop-hint {
+            display: none;
         }
 
         .dropped-item {
@@ -1209,18 +1213,17 @@ function renderDragExercise(q) {
 
         zone.dataset.answer = pair.element;
 
-        const title = document.createElement("div");
-
-        title.className = "definition-title";
-        title.textContent = pair.element;
-
         const definition = document.createElement("div");
 
         definition.className = "definition-text";
         definition.textContent = pair.definition;
 
-        zone.appendChild(title);
         zone.appendChild(definition);
+
+        const dropHint = document.createElement("div");
+        dropHint.className = "drop-hint";
+        dropHint.textContent = "Arrastra aquí";
+        zone.appendChild(dropHint);
 
 
         zone.addEventListener("dragover", e => {
